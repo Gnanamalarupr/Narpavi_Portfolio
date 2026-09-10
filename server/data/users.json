@@ -1,4 +1,4 @@
 [
-  {"id":"u-admin","name":"Rhea Shah","email":"admin@maisonrose.in","password":"MaisonRose@2026","role":"admin"},
-  {"id":"u-customer","name":"Aanya Mehta","email":"customer@maisonrose.in","password":"Customer@2026","role":"customer"}
+  {"id":"u-admin","name":"Rhea Shah","email":"admin@maisonrose.in","password":"scrypt$7150c3fe19b8e178e63827bf9341430e$0c56f5061031398038ed8fef827e99c488a6492bdc716f92495cebb8bb448a7a12c8d1a6696cee25e40f83ccac1a38d87ee1b71124bd2487e1d26f63fa0e4863","role":"admin"},
+  {"id":"u-customer","name":"Aanya Mehta","email":"customer@maisonrose.in","password":"scrypt$665172fa948d9fa6077b61f3d3c74f4e$0ee04dad0bfd9a4fe924a9c2317ddee979be44f80c79258806d15a7f11b7146a564adf05a1cff829dbb57125c5d94fd064630ab3e8a3e6b6571233d66e40056f","role":"customer"}
 ]
