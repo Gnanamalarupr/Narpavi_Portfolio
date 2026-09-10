@@ -1,0 +1,4 @@
+[
+  {"id":"u-admin","name":"Rhea Shah","email":"admin@maisonrose.in","password":"MaisonRose@2026","role":"admin"},
+  {"id":"u-customer","name":"Aanya Mehta","email":"customer@maisonrose.in","password":"Customer@2026","role":"customer"}
+]

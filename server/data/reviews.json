@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1786011166425-e8209a",
+    "name": "malar",
+    "city": "sathy",
+    "rating": 5,
+    "title": "sdcwe",
+    "description": "wcEAFWQAEF",
+    "image": "",
+    "status": "rejected",
+    "createdAt": "2026-08-06T10:12:46.425Z"
+  },
+  {
+    "id": "r1",
+    "name": "Aanya Mehta",
+    "city": "Mumbai",
+    "rating": 5,
+    "title": "Exactly the bridal glow I dreamed of",
+    "description": "Rhea made me feel calm, polished and entirely myself. Every photograph turned out luminous.",
+    "status": "approved",
+    "createdAt": "2026-06-12T10:00:00Z"
+  },
+  {
+    "id": "r2",
+    "name": "Ishita Kapoor",
+    "city": "Delhi",
+    "rating": 5,
+    "title": "Flawless from ceremony to after-party",
+    "description": "The makeup felt weightless and stayed beautiful through every happy tear.",
+    "status": "approved",
+    "createdAt": "2026-05-18T10:00:00Z"
+  }
+]

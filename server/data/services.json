@@ -1,0 +1,5 @@
+[
+ {"id":"s1","name":"Signature Bridal","price":"₹28,000","duration":"3.5 hours","description":"A luminous, camera-ready bridal look crafted around your story.","image":"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=85","features":["Skin preparation ritual","Hair styling","Lashes & touch-up kit"]},
+ {"id":"s2","name":"Airbrush Bridal","price":"₹35,000","duration":"4 hours","description":"Long-wear, featherlight airbrush artistry with a velvet finish.","image":"https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=900&q=85","features":["Airbrush complexion","Premium lashes","On-location service"]},
+ {"id":"s3","name":"Event Glam","price":"₹8,500","duration":"1.5 hours","description":"Modern soft glam for receptions, celebrations and memorable nights.","image":"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=85","features":["Makeup application","Lashes","Mini touch-up kit"]}
+]

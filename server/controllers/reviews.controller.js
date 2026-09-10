@@ -1,0 +1,6 @@
+import * as reviews from '../services/review.service.js';
+export const getApproved = async (_, res, next) => { try { const data = await reviews.approvedReviews(); res.json({ success: true, data, meta: { averageRating: data.length ? +(data.reduce((a,r)=>a+r.rating,0)/data.length).toFixed(1) : 0, total: data.length } }); } catch(e){next(e)} };
+export const getPending = async (_, res, next) => { try { res.json({ success:true, data: await reviews.pendingReviews() }); } catch(e){next(e)} };
+export const create = async (req,res,next) => { try { const { name, city, rating, title, description } = req.body; if (!name || !city || !rating || !title || !description) return res.status(400).json({ success:false, message:'Please complete all required review fields.' }); if (+rating < 1 || +rating > 5) return res.status(400).json({success:false,message:'Rating must be between 1 and 5.'}); res.status(201).json({success:true,data:await reviews.createReview(req.body)}); }catch(e){next(e)} };
+export const approve = async (req,res,next) => { try { res.json({success:true,data:await reviews.setReviewStatus(req.params.id,'approved')}); }catch(e){next(e)} };
+export const reject = async (req,res,next) => { try { res.json({success:true,data:await reviews.setReviewStatus(req.params.id,'rejected')}); }catch(e){next(e)} };

@@ -1,0 +1,2 @@
+import { readCollection } from '../services/jsonStore.service.js';
+export const collection = (file) => async (req,res,next) => { try { const items = await readCollection(file); const origin = `${req.protocol}://${req.get('host')}`; const data = items.map((item) => item.image?.startsWith('/') ? { ...item, image: `${origin}${item.image}` } : item); res.json({success:true,data}); }catch(e){next(e)} };

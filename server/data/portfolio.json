@@ -1,0 +1,38 @@
+[
+  {
+    "id": "p2",
+    "category": "Reception",
+    "title": "Candlelight Glam",
+    "image": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=900&q=85"
+  },
+  {
+    "id": "p3",
+    "category": "Engagement",
+    "title": "Rose Gold Romance",
+    "image": "https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?auto=format&fit=crop&w=900&q=85"
+  },
+  {
+    "id": "p4",
+    "category": "Party Makeup",
+    "title": "Midnight Muse",
+    "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85"
+  },
+  {
+    "id": "p5",
+    "category": "HD Makeup",
+    "title": "Natural Light",
+    "image": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=85"
+  },
+  {
+    "id": "p6",
+    "category": "Airbrush Makeup",
+    "title": "Pearl Veil",
+    "image": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=900&q=85"
+  },
+  {
+    "id": "p7",
+    "category": "Fashion Makeup",
+    "title": "Editorial Bloom",
+    "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=85"
+  }
+]

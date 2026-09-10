@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { requireAdmin } from '../middleware/auth.middleware.js';
+import { uploadImage } from '../middleware/upload.middleware.js';
+import * as catalog from '../controllers/adminCatalog.controller.js';
+import * as site from '../controllers/site.controller.js';
+const router = Router(); const portfolio = 'portfolio.json'; const services = 'services.json';
+router.use(requireAdmin);
+router.get('/portfolio', catalog.list(portfolio)); router.post('/portfolio', uploadImage, catalog.create(portfolio)); router.put('/portfolio/:id', uploadImage, catalog.update(portfolio)); router.delete('/portfolio/:id', catalog.remove(portfolio));
+router.get('/services', catalog.list(services)); router.post('/services', uploadImage, catalog.create(services)); router.put('/services/:id', uploadImage, catalog.update(services)); router.delete('/services/:id', catalog.remove(services));
+router.get('/site', site.get); router.put('/site', site.update);
+export default router;

@@ -1,0 +1,16 @@
+{
+  "name": "maison-rose-api",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "maison-rose-makeup-portfolio": "file:..",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2"
+  }
+}
