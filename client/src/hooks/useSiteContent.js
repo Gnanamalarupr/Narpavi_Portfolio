@@ -1,0 +1,30 @@
+import { useEffect, useState } from 'react';
+import { siteApi } from '../services/api';
+
+export const defaultSiteContent = {
+  heroEyebrow: 'Makeup artistry · Mumbai',
+  heroTitle: 'Beauty that feels like you, at your most radiant.',
+  heroText: 'Bespoke bridal and occasion makeup, designed with a light hand and an eye for the details you will remember forever.',
+  phone: '+91 98765 43210',
+  email: 'hello@maisonrose.in',
+  address: 'Bandra West, Mumbai 400050',
+  instagram: 'https://instagram.com/',
+  homeIntroTitle: 'A little ritual before a very big moment.',
+  homeIntroText: 'I believe the best makeup lets your presence lead. Every appointment begins with listening—then translates your vision into an enduring, effortless glow.',
+  homeCtaTitle: 'Let’s create something quietly unforgettable.',
+  aboutTitle: 'Artistry, with a sense of ease.',
+  aboutBio: 'I’m Rhea Shah, a Mumbai-based makeup artist with a devotion to soft glamour, healthy skin, and helping you feel seen.',
+  aboutBioExtra: 'My kit is thoughtfully edited with professional, skin-loving formulas—and every face is approached with care, curiosity and zero one-size-fits-all rules.',
+  faqIntro: 'A few helpful details.',
+  footerDescription: 'Bespoke makeup artistry for moments that feel entirely yours.'
+};
+
+export default function useSiteContent() {
+  const [content, setContent] = useState(defaultSiteContent);
+
+  useEffect(() => {
+    siteApi.get().then((response) => setContent({ ...defaultSiteContent, ...response.data.data })).catch(() => {});
+  }, []);
+
+  return content;
+}
