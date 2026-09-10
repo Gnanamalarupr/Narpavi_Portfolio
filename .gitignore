@@ -1,0 +1,9 @@
+node_modules/
+client/dist/
+server/uploads/*
+!server/uploads/.gitkeep
+.env
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
