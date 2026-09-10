@@ -1,3 +1,8 @@
 import * as bookings from '../services/booking.service.js';
+import * as notifications from '../services/notification.service.js';
 export const getAll = async (_,res,next) => { try { res.json({success:true,data:await bookings.allBookings()}); }catch(e){next(e)} };
 export const create = async (req,res,next) => { try { const required=['name','phone','email','eventType','date','time']; if(required.some(k=>!req.body[k])) return res.status(400).json({success:false,message:'Please complete all required booking fields.'}); res.status(201).json({success:true,data:await bookings.createBooking(req.body)}); }catch(e){next(e)} };
+export const update = async (req, res, next) => { try { const allowed = ['name', 'phone', 'email', 'eventType', 'date', 'time', 'message', 'status', 'adminNotes']; const data = Object.fromEntries(Object.entries(req.body).filter(([key]) => allowed.includes(key))); if (data.status && !['new', 'contacted', 'confirmed', 'completed', 'cancelled'].includes(data.status)) return res.status(400).json({ success: false, message: 'Invalid booking status.' }); res.json({ success: true, data: await bookings.updateBooking(req.params.id, data) }); } catch (e) { next(e); } };
+export const remove = async (req, res, next) => { try { await bookings.removeBooking(req.params.id); res.json({ success: true }); } catch (e) { next(e); } };
+export const getNotifications = async (_, res, next) => { try { res.json({ success: true, data: await notifications.allNotifications() }); } catch (e) { next(e); } };
+export const readNotification = async (req, res, next) => { try { res.json({ success: true, data: await notifications.markNotificationRead(req.params.id) }); } catch (e) { next(e); } };
