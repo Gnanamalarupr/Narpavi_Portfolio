@@ -1,0 +1,1 @@
+import {FaStar} from 'react-icons/fa'; export default function Stars({value=5,onChange}){return <div className="flex gap-1">{[1,2,3,4,5].map(n=><button key={n} type="button" onClick={()=>onChange?.(n)} className={onChange?'cursor-pointer':''}><FaStar className={n<=value?'text-gold':'text-[#e7dedd]'}/></button>)}</div>}

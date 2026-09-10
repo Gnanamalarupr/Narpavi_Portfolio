@@ -1,0 +1,9 @@
+import axios from 'axios';
+export const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const api=axios.create({baseURL:apiBase});
+api.interceptors.request.use((config)=>{const token=localStorage.getItem('maison-token');if(token)config.headers.Authorization=`Bearer ${token}`;return config;});
+export const imageUrl=(image)=>image?.startsWith('/')?`${apiBase.replace('/api','')}${image}`:image;
+export const authApi={login:(d)=>api.post('/auth/login',d),me:()=>api.get('/auth/me')};
+export const reviewsApi={get:()=>api.get('/reviews'),pending:()=>api.get('/reviews/pending'),create:(d)=>api.post('/reviews',d),approve:(id)=>api.put(`/reviews/${id}/approve`),reject:(id)=>api.delete(`/reviews/${id}/reject`)};
+export const bookingsApi={create:(d)=>api.post('/bookings',d),get:()=>api.get('/bookings')}; export const catalogApi={portfolio:()=>api.get('/portfolio'),services:()=>api.get('/services')}; export const siteApi={get:()=>api.get('/site')};
+export const adminApi={site:()=>api.get('/admin/site'),updateSite:(d)=>api.put('/admin/site',d),portfolio:()=>api.get('/admin/portfolio'),services:()=>api.get('/admin/services'),createPortfolio:(d)=>api.post('/admin/portfolio',d),updatePortfolio:(id,d)=>api.put(`/admin/portfolio/${id}`,d),deletePortfolio:(id)=>api.delete(`/admin/portfolio/${id}`),createService:(d)=>api.post('/admin/services',d),updateService:(id,d)=>api.put(`/admin/services/${id}`,d),deleteService:(id)=>api.delete(`/admin/services/${id}`)};
