@@ -37,7 +37,10 @@ export const getModels = () => {
     }, { ...modelOptions, tableName: 'reviews' }),
     Notification: sequelize.define('Notification', {
       id: { type: DataTypes.STRING(80), primaryKey: true }, type: { type: DataTypes.STRING(100), allowNull: false }, bookingId: DataTypes.STRING(80), title: { type: DataTypes.STRING(255), allowNull: false }, message: DataTypes.TEXT, read: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false }, createdAt: DataTypes.DATE
-    }, { ...modelOptions, tableName: 'notifications' })
+    }, { ...modelOptions, tableName: 'notifications' }),
+    Availability: sequelize.define('Availability', {
+      date: { type: DataTypes.DATEONLY, primaryKey: true }, status: { type: DataTypes.STRING(30), allowNull: false, defaultValue: 'available' }, note: DataTypes.STRING(255)
+    }, { ...modelOptions, tableName: 'availability' })
   };
   return models;
 };
