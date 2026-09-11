@@ -12,7 +12,9 @@ export const getModels = () => {
       id: { type: DataTypes.STRING(80), primaryKey: true },
       name: { type: DataTypes.STRING(120), allowNull: false },
       email: { type: DataTypes.STRING(255), allowNull: false, unique: true },
-      password: { type: DataTypes.STRING(255), allowNull: false },
+      password: { type: DataTypes.STRING(255), allowNull: true },
+      googleId: { type: DataTypes.STRING(255), allowNull: true, unique: true },
+      authProvider: { type: DataTypes.STRING(30), allowNull: false, defaultValue: 'password' },
       role: { type: DataTypes.STRING(30), allowNull: false, defaultValue: 'customer' }
     }, { ...modelOptions, tableName: 'users' }),
     SiteContent: sequelize.define('SiteContent', {

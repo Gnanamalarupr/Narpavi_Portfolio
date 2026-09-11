@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import { getModels } from '../models/index.js';
+import { OAuth2Client } from 'google-auth-library';
 
 const encode = (value) => Buffer.from(JSON.stringify(value)).toString('base64url');
 
@@ -12,6 +13,7 @@ const hashPassword = async (password, salt = crypto.randomBytes(16).toString('he
   crypto.scrypt(password, salt, 64, (error, derivedKey) => error ? reject(error) : resolve(`scrypt$${salt}$${derivedKey.toString('hex')}`));
 });
 const verifyPassword = async (password, stored) => {
+  if (!stored) return false;
   const [, salt, expected] = stored.split('$');
   if (!salt || !expected) return false;
   return new Promise((resolve, reject) => crypto.scrypt(password, salt, 64, (error, derivedKey) => {
@@ -37,6 +39,26 @@ export const verifyToken = async (token) => {
 export const authenticate = async (email, password) => {
   const user = await getModels().User.findOne({ where: { email: email.toLowerCase() } });
   return user && await verifyPassword(password, user.password) ? user : null;
+};
+export const registerCustomer = async ({ name, email, password }) => {
+  const User = getModels().User;
+  const normalizedEmail = email.toLowerCase();
+  if (await User.findOne({ where: { email: normalizedEmail } })) { const error = new Error('An account with this email already exists.'); error.status = 409; throw error; }
+  const user = await User.create({ id: `u-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`, name, email: normalizedEmail, password: await hashPassword(password), role: 'customer', authProvider: 'password' });
+  return user;
+};
+export const authenticateGoogleCustomer = async (credential) => {
+  if (!process.env.GOOGLE_CLIENT_ID) throw Object.assign(new Error('Google sign-in is not configured.'), { status: 503 });
+  const ticket = await new OAuth2Client(process.env.GOOGLE_CLIENT_ID).verifyIdToken({ idToken: credential, audience: process.env.GOOGLE_CLIENT_ID });
+  const payload = ticket.getPayload();
+  if (!payload?.sub || !payload.email || !payload.email_verified) throw Object.assign(new Error('Google account could not be verified.'), { status: 401 });
+  const User = getModels().User;
+  let user = await User.findOne({ where: { googleId: payload.sub } });
+  if (!user) user = await User.findOne({ where: { email: payload.email.toLowerCase() } });
+  if (user?.role === 'admin') throw Object.assign(new Error('Admin accounts must use email and password.'), { status: 403 });
+  if (!user) user = await User.create({ id: `u-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`, name: payload.name || payload.email.split('@')[0], email: payload.email.toLowerCase(), password: null, googleId: payload.sub, authProvider: 'google', role: 'customer' });
+  else if (!user.googleId) await user.update({ googleId: payload.sub, authProvider: 'google' });
+  return user;
 };
 export const publicUser = (user) => {
   const { password, ...data } = user.toJSON ? user.toJSON() : user;
