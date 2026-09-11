@@ -1,7 +1,10 @@
 import { getModels } from '../models/index.js';
 import { makeId } from './jsonStore.service.js';
 
-export const allNotifications = () => getModels().Notification.findAll({ order: [['createdAt', 'DESC']] });
+export const allNotifications = async ({ page = 1, limit = 10 } = {}) => {
+  const result = await getModels().Notification.findAndCountAll({ order: [['createdAt', 'DESC']], limit, offset: (page - 1) * limit });
+  return { rows: result.rows, count: result.count };
+};
 export const createNotification = (data) => getModels().Notification.create({ id: makeId(), read: false, createdAt: new Date(), ...data });
 export const markNotificationRead = async (id) => {
   const notification = await getModels().Notification.findByPk(id);
