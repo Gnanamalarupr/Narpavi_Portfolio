@@ -9,6 +9,8 @@ import servicesRouter from './routes/services.routes.js';
 import authRouter from './routes/auth.routes.js';
 import adminRouter from './routes/admin.routes.js';
 import siteRouter from './routes/site.routes.js';
+import { connectDatabase } from './config/database.js';
+import { initializeDatabase } from './services/database.service.js';
 import { notFound, errorHandler } from './middleware/error.middleware.js';
 
 dotenv.config();
@@ -27,4 +29,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/site', siteRouter);
 app.use(notFound); app.use(errorHandler);
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`API listening on ${port}`));
+connectDatabase().then(initializeDatabase).then(() => app.listen(port, () => console.log(`API listening on ${port}`))).catch((error) => {
+	console.error('Unable to connect to MySQL:', error.message);
+	process.exit(1);
+});
