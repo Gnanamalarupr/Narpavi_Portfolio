@@ -1,4 +1,5 @@
 import express from 'express';
+import { createServer } from 'node:http';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
@@ -12,6 +13,7 @@ import siteRouter from './routes/site.routes.js';
 import { connectDatabase } from './config/database.js';
 import { initializeDatabase } from './services/database.service.js';
 import { notFound, errorHandler } from './middleware/error.middleware.js';
+import { initializeSocket } from './realtime/socket.js';
 
 dotenv.config();
 const app = express();
@@ -29,7 +31,11 @@ app.use('/api/admin', adminRouter);
 app.use('/api/site', siteRouter);
 app.use(notFound); app.use(errorHandler);
 const port = process.env.PORT || 5000;
-connectDatabase().then(initializeDatabase).then(() => app.listen(port, () => console.log(`API listening on ${port}`))).catch((error) => {
+connectDatabase().then(initializeDatabase).then(() => {
+	const httpServer = createServer(app);
+	initializeSocket(httpServer);
+	httpServer.listen(port, () => console.log(`API listening on ${port}`));
+}).catch((error) => {
 	console.error('Unable to connect to MySQL:', error.message);
 	process.exit(1);
 });
