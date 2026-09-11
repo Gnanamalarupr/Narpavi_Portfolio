@@ -1,4 +1,13 @@
-import { readCollection, writeCollection } from './jsonStore.service.js';
-const file = 'site.json';
-export const getSite = () => readCollection(file);
-export const updateSite = async (data) => { const current = await getSite(); const next = { ...current, ...data }; await writeCollection(file, next); return next; };
+import { getModels } from '../models/index.js';
+
+const plain = (item) => { const { id, ...content } = item.toJSON(); return content; };
+export const getSite = async () => {
+  const site = await getModels().SiteContent.findByPk(1);
+  return site ? plain(site) : {};
+};
+export const updateSite = async (data) => {
+  const SiteContent = getModels().SiteContent;
+  const [site] = await SiteContent.findOrCreate({ where: { id: 1 }, defaults: data });
+  await site.update(data);
+  return plain(site);
+};

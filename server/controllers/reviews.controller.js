@@ -2,7 +2,10 @@ import * as reviews from '../services/review.service.js';
 
 const withImageUrl = (req, items) => {
 	const origin = `${req.protocol}://${req.get('host')}`;
-	return items.map((review) => ({ ...review, image: review.image?.startsWith('/') ? `${origin}${review.image}` : review.image || '' }));
+	return items.map((item) => {
+		const review = item.toJSON ? item.toJSON() : item;
+		return { ...review, image: review.image?.startsWith('/') ? `${origin}${review.image}` : review.image || '' };
+	});
 };
 export const getApproved = async (req, res, next) => { try { const data = withImageUrl(req, await reviews.approvedReviews()); res.json({ success: true, data, meta: { averageRating: data.length ? +(data.reduce((a,r)=>a+r.rating,0)/data.length).toFixed(1) : 0, total: data.length } }); } catch(e){next(e)} };
 export const getPending = async (req, res, next) => { try { res.json({ success:true, data: withImageUrl(req, await reviews.pendingReviews()) }); } catch(e){next(e)} };

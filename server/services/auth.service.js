@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { readCollection } from './jsonStore.service.js';
+import { getModels } from '../models/index.js';
 
 const encode = (value) => Buffer.from(JSON.stringify(value)).toString('base64url');
 
@@ -32,15 +32,14 @@ export const verifyToken = async (token) => {
   if (!payload || !signature || signature.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return null;
   const data = JSON.parse(Buffer.from(payload, 'base64url').toString());
   if (data.exp < Date.now()) return null;
-  const users = await readCollection('users.json');
-  return users.find((user) => user.id === data.sub) || null;
+  return getModels().User.findByPk(data.sub);
 };
 export const authenticate = async (email, password) => {
-  const users = await readCollection('users.json');
-  for (const user of users) {
-    if (user.email.toLowerCase() === email.toLowerCase() && await verifyPassword(password, user.password)) return user;
-  }
-  return null;
+  const user = await getModels().User.findOne({ where: { email: email.toLowerCase() } });
+  return user && await verifyPassword(password, user.password) ? user : null;
 };
-export const publicUser = ({ password, ...user }) => user;
+export const publicUser = (user) => {
+  const { password, ...data } = user.toJSON ? user.toJSON() : user;
+  return data;
+};
 export { hashPassword };

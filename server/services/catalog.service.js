@@ -1,5 +1,18 @@
-import { readCollection, writeCollection, makeId } from './jsonStore.service.js';
-export const list = (file) => readCollection(file);
-export const create = async (file, data) => { const items = await readCollection(file); const item = { id: makeId(), ...data }; items.unshift(item); await writeCollection(file, items); return item; };
-export const update = async (file, id, data) => { const items = await readCollection(file); const index = items.findIndex((item) => item.id === id); if (index < 0) { const error = new Error('Item not found'); error.status = 404; throw error; } items[index] = { ...items[index], ...data, id }; await writeCollection(file, items); return items[index]; };
-export const remove = async (file, id) => { const items = await readCollection(file); const next = items.filter((item) => item.id !== id); if (next.length === items.length) { const error = new Error('Item not found'); error.status = 404; throw error; } await writeCollection(file, next); };
+import { getModels } from '../models/index.js';
+import { makeId } from './jsonStore.service.js';
+
+const modelFor = (file) => file === 'portfolio.json' ? getModels().PortfolioItem : getModels().Service;
+const plain = (item) => item.toJSON();
+export const list = async (file) => (await modelFor(file).findAll()).map(plain);
+export const create = async (file, data) => plain(await modelFor(file).create({ id: makeId(), ...data }));
+export const update = async (file, id, data) => {
+  const item = await modelFor(file).findByPk(id);
+  if (!item) { const error = new Error('Item not found'); error.status = 404; throw error; }
+  await item.update({ ...data, id });
+  return plain(item);
+};
+export const remove = async (file, id) => {
+  const item = await modelFor(file).findByPk(id);
+  if (!item) { const error = new Error('Item not found'); error.status = 404; throw error; }
+  await item.destroy();
+};

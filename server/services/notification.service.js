@@ -1,24 +1,11 @@
-import { readCollection, writeCollection, makeId } from './jsonStore.service.js';
+import { getModels } from '../models/index.js';
+import { makeId } from './jsonStore.service.js';
 
-const file = 'notifications.json';
-
-export const allNotifications = () => readCollection(file);
-export const createNotification = async (data) => {
-  const all = await readCollection(file);
-  const notification = { id: makeId(), read: false, createdAt: new Date().toISOString(), ...data };
-  all.unshift(notification);
-  await writeCollection(file, all);
-  return notification;
-};
+export const allNotifications = () => getModels().Notification.findAll({ order: [['createdAt', 'DESC']] });
+export const createNotification = (data) => getModels().Notification.create({ id: makeId(), read: false, createdAt: new Date(), ...data });
 export const markNotificationRead = async (id) => {
-  const all = await readCollection(file);
-  const notification = all.find((item) => item.id === id);
-  if (!notification) {
-    const error = new Error('Notification not found');
-    error.status = 404;
-    throw error;
-  }
-  notification.read = true;
-  await writeCollection(file, all);
+  const notification = await getModels().Notification.findByPk(id);
+  if (!notification) { const error = new Error('Notification not found'); error.status = 404; throw error; }
+  await notification.update({ read: true });
   return notification;
 };
